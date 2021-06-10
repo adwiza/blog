@@ -5,6 +5,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class Category(models.Model):
+    slug = models.SlugField(max_length=50)
+    title = models.CharField(max_length=50)
+
+
 class Post(models.Model):
     STATUS_CHOICES = (
         ('draft', 'Черновик'),
@@ -19,6 +24,7 @@ class Post(models.Model):
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    category = models.ForeignKey(Category, related_name='posts', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title

@@ -13,11 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import debug_toolbar
+from django.conf import settings
 from django.contrib import admin
-from django.urls import path
-from posts.views import PostsListView
+from django.urls import include, path
+from posts.views import PostsListView, json_list_published_posts
+from posts.api import views as api_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', PostsListView.as_view()),
+    #path('api/posts/', json_list_published_posts),
+    path('api/posts/', api_views.PostListView.as_view(), name='api_post_list'),
+    path('api/posts/<pk>', api_views.PostDetailView.as_view(), name='api_post_detail')
 ]
+
+if settings.DEBUG:
+    urlpatterns = [path('__debug__', include(debug_toolbar.urls))] + urlpatterns
