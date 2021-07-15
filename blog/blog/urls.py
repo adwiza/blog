@@ -23,7 +23,7 @@ from posts.api import views as api_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', PostsListView.as_view()),
-    #path('api/posts/', json_list_published_posts),
+    path('api/posts/', json_list_published_posts),
     path('api/posts/', api_views.PostListView.as_view(), name='api_post_list'),
     path('api/posts/<pk>', api_views.PostDetailView.as_view(), name='api_post_detail')
 ]

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,3 +133,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
+
+sentry_sdk.init(
+    dsn="https://dbb79f7ecc164211b6808d8cfd21cadb@o859965.ingest.sentry.io/5820841",
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.Memcached.Cache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}

@@ -16,7 +16,7 @@ class PostsListView(ListView):
 
 def json_list_published_posts(requests):
     posts = Post.objects.filter(status='published')
-
+    1 / 0
     return JsonResponse(
         {
             'posts': [
